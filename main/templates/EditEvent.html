@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Event</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <style>
+        body {
+            background-image: url('{% static "images/background.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .window {
+            width: 400px;
+            padding: 20px;
+            text-align: center;
+            background-color: #ff99c8; /* Pink Window */
+            border: 3px solid black;
+            box-shadow: 4px 4px 0px black;
+        }
+        h1 {
+            font-size: 22px;
+            margin: 15px 0;
+        }
+        .google-button, button {
+            background-color: #d63384;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .google-button:hover, button:hover {
+            background-color: #b0226e;
+        }
+        label {
+            display: inline-block;
+            margin-top: 10px;
+            text-align: left;
+            width: 100%;
+        }
+        input[type="text"], input[type="date"] {
+            width: 90%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="window">
+    <h1>Edit Event</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Subject:</label>
+        <input type="text" name="subject" value="{{ event.subject }}" required>
+
+        <label>Due Date (YYYY-MM-DD):</label>
+        <input type="date" name="due_date" value="{{ event.due_date|date:'Y-m-d' }}" required>
+
+        <button type="submit" class="google-button">Save Changes</button>
+    </form>
+</div>
+
+</body>
+</html>

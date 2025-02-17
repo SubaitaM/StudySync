@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Sync Your Syllabus</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <style>
+        body {
+            background-image: url('{% static "images/background.jpg" %}'); /* Ensure the image is in the same directory */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .window {
+            width: 400px;  /* Larger Window */
+            padding: 20px;
+            text-align: center;
+            background-color: #ff99c8; /* Pink Window */
+            border: 3px solid black; /* Keeps Windows 98 look */
+            box-shadow: 4px 4px 0px black; /* Retro 98 style shadow */
+        }
+
+        h1 {
+            font-size: 22px;
+            margin: 15px 0;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .google-button {
+            background-color: #d63384; /* Dark Pink */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 80%;
+            margin-top: 15px;
+        }
+
+        .google-button:hover {
+            background-color: #b0226e;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="window">
+        <h1>Sync Your Syllabus</h1>
+        <p>Be in sync</p>
+
+        <button class="google-button" onclick="signInWithGoogle()">Sign in with Google</button>
+        <a href="{% url 'upload' %}">
+            <button class="google-button">Sign Up</button>
+        </a>
+    </div>
+
+    <script>
+        function signInWithGoogle() {
+            window.location.href = "http://127.0.0.1:8000/accounts/login/";
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Your Syllabus</title>
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <style>
+        body {
+            background-image: url('{% static "images/background.jpg" %}'); /* Assuming the background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .window {
+            width: 400px;
+            padding: 20px;
+            text-align: center;
+            background-color: #ff99c8; /* Pink Window */
+            border: 3px solid black;
+            box-shadow: 4px 4px 0px black;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .upload-btn {
+            background-color: #d63384; /* Dark Pink */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 80%;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            width: 80%;
+            left: 10%;
+            background-color: #ff99c8; /* Pink */
+            border: 2px solid black;
+            box-shadow: 4px 4px 0px black;
+            z-index: 10;
+        }
+
+        .dropdown button {
+            background-color: #ff99c8; /* Pink */
+            color: black;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .dropdown button:hover {
+            background-color: #ff85b4; /* Lighter pink */
+        }
+
+        .hidden-input {
+            display: none;
+        }
+
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+            background-color: #ff99c8;
+            padding: 5px;
+            border-radius: 5px;
+            border: 2px solid black;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 8px;
+        }
+
+        .cancel-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+
+        .continue-btn {
+            background-color: #d63384; /* Dark Pink */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 80%;
+            margin-top: 20px;
+
+            /* Center Align */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+
+        .continue-btn:hover {
+            background-color: #b0226e;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="window">
+        <h1>Upload Your Syllabus</h1>
+
+        <!-- Upload Button -->
+        <button class="upload-btn" onclick="toggleDropdown()">Upload</button>
+
+        <!-- Dropdown Options -->
+        <div class="dropdown" id="dropdown-menu">
+            <button onclick="triggerFileUpload()">From this device</button>
+            <button onclick="uploadFromGoogleDrive()">From Google Drive</button>
+        </div>
+
+        <!-- Hidden File Input -->
+        <input type="file" id="file-upload" class="hidden-input" accept=".pdf" onchange="handleFileUpload(event)">
+
+        <!-- Display uploaded files -->
+        <div id="uploaded-files-container" style="margin-top: 15px;"></div>
+
+        <!-- Continue Button -->
+        <button class="continue-btn" id="continue-btn" style="display: none;"onclick="window.location.href='{% url 'loading' %}'">Continue</button>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdown-menu");
+
+            // Toggle dropdown visibility
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        function triggerFileUpload() {
+            document.getElementById("file-upload").click();
+        }
+
+        function handleFileUpload(event) {
+            var file = event.target.files[0];
+            var dropdown = document.getElementById("dropdown-menu");
+            var uploadedFilesContainer = document.getElementById("uploaded-files-container");
+            var continueBtn = document.getElementById("continue-btn");
+
+            if (file) {
+                if (file.type !== "application/pdf") {
+                    alert("Only PDF files are allowed!");
+                    return;
+                }
+
+                // Hide dropdown immediately after file selection
+                dropdown.style.display = "none";
+
+                // Create a new div for the uploaded file
+                var fileDiv = document.createElement("div");
+                fileDiv.classList.add("uploaded-file");
+
+                // Create a span element for file name
+                var fileNameSpan = document.createElement("span");
+                fileNameSpan.textContent = "Uploaded: " + file.name;
+
+                // Create a cancel button
+                var cancelButton = document.createElement("button");
+                cancelButton.classList.add("cancel-btn");
+                cancelButton.textContent = "❌";
+                cancelButton.onclick = function () {
+                    uploadedFilesContainer.removeChild(fileDiv);
+                    if (uploadedFilesContainer.children.length === 0) {
+                        continueBtn.style.display = "none";
+                    }
+                };
+
+                // Append file name and cancel button to file div
+                fileDiv.appendChild(fileNameSpan);
+                fileDiv.appendChild(cancelButton);
+
+                // Append file div to the container
+                uploadedFilesContainer.appendChild(fileDiv);
+
+                // Show continue button when at least one file is uploaded
+                continueBtn.style.display = "block";
+            }
+        }
+
+        function uploadFromGoogleDrive() {
+            alert("Google Drive upload feature coming soon!");
+        }
+    </script>
+
+</body>
+</html>
